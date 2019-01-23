@@ -1,9 +1,24 @@
 - name: Configure webserver with nginx
   hosts: dev 
-  sudo: True
+  become: yes
+  become_method: sudo
   tasks:
     - name: install git 
       apt: name=git update_cache=yes
+
+    - name: install python3
+      apt: name={{item}} state=installed
+      with_items:
+        - python3-pip
+        - python3-dev
+        - python3-psycopg2
+
+    - name: install postgresql
+      apt: name={{item}} state=installed
+      with_items:
+        - libpq-dev
+        - postgresql
+        - postgresql-contrib
 
     - name: install nginx
       apt: name=nginx update_cache=yes

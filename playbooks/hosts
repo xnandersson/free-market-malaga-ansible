@@ -1,5 +1,5 @@
 [dev]
-testserver ansible_ssh_host=192.168.1.199 ansible_ssh_user=nandersson ansible_ssh_private_key_file=/home/nandersson/.ssh/id_rsa
+testserver ansible_ssh_host=192.168.1.152 ansible_ssh_user=root ansible_ssh_private_key_file=/home/nandersson/.ssh/id_rsa
 
 [prod]
 fmm ansible_ssh_host=157.230.102.117 ansible_ssh_user=root ansible_ssh_private_key_file=/home/nandersson/.ssh/id_rsa

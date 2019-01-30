@@ -8,7 +8,7 @@
       apt: name=virtualenv update_cache=yes
 
     - name: Manually create virtualenv
-      command: virtualenv /home/nandersson/venvs/stub_admin creates="/home/nandersson/venvs/stub_admin"
+      command: virtualenv /home/nandersson/venvs2/freemarketmalaga creates="/home/nandersson/venvs2/freemarketmalaga"
 
     - name: install nginx
       apt: name=nginx update_cache=yes
@@ -24,6 +24,32 @@
 
     - name: git checkout
       git: repo='https://github.com/xnandersson/free-market-malaga.git' dest=/var/www/free-market-malaga
+
+    - name: copy local_settings.py
+      copy: src=files/local_settings.py dest=/var/www/free-market-malaga/src/freemarketmalaga/
+
+    - name: Install Requirements
+      pip: 
+        requirements: "/var/www/free-market-malaga/requirements.txt"
+        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
+
+    - name: Django Migrate
+      django_manage:
+        command: migrate
+        app_path: "/var/www/free-market-malaga/src"
+        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
+
+#    - name: Django SuperUser
+#      django_manage:
+#        command: "createsuperuser --noinput --username=nandersson --email=n@n.com" 
+#        app_path: "/var/www/free-market-malaga/src"
+#        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
+
+    - name: Django Run 
+      django_manage:
+        command: runserver --noinput 
+        app_path: "/var/www/free-market-malaga/src"
+        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
 
     - name: restart nginx
       service: name=nginx state=restarted

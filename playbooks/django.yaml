@@ -10,6 +10,9 @@
     - name: Manually create virtualenv
       command: virtualenv /home/nandersson/venvs2/freemarketmalaga creates="/home/nandersson/venvs2/freemarketmalaga"
 
+    - name: install gunicorn 
+      apt: name=gunicorn update_cache=yes
+
     - name: install nginx
       apt: name=nginx update_cache=yes
 
@@ -45,11 +48,14 @@
 #        app_path: "/var/www/free-market-malaga/src"
 #        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
 
-    - name: Django Run 
-      django_manage:
-        command: runserver --noinput 
-        app_path: "/var/www/free-market-malaga/src"
-        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
+#    - name: Gunicorn
+#      gunicorn: app = 'wsgi' chdir = '/var/www/free-market-malaga/src/' venv = '/home/nandersson/venvs2/freemarketmalaga'
+
+    - name: FreeMarketMalaga Service
+      copy: src=files/freemarketmalaga.service dest=/etc/systemd/system/freemarketmalaga.service
 
     - name: restart nginx
       service: name=nginx state=restarted
+
+    - name: restart gunicorn
+      service: name=freemarketmalaga state=restarted

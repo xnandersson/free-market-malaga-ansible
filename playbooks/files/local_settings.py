@@ -1,3 +1,4 @@
+ALLOWED_HOSTS=('*',)
 DEBUG=False
 SECRET_KEY = 'q96ek8frocksf9)&-wf*cu9wqblackbird(@h#_ze3%@@n*(c(2^dr2du8_9ctf%'
 DATABASES = {

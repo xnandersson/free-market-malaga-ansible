@@ -10,9 +10,6 @@
     - name: Manually create virtualenv
       command: virtualenv /home/nandersson/venvs2/freemarketmalaga creates="/home/nandersson/venvs2/freemarketmalaga"
 
-    - name: install gunicorn 
-      apt: name=gunicorn update_cache=yes
-
     - name: install nginx
       apt: name=nginx update_cache=yes
 

@@ -1,0 +1,13 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/var/www/free-market-malaga/src
+ExecStart=/home/nandersson/venvs2/freemarketmalaga/bin/gunicorn --access-logfile - --workers 3 --bind unix:freemarketmalaga.sock -m 007 freemarketmalaga.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+

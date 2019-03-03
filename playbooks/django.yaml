@@ -1,20 +1,29 @@
 - name: Configure Django
-  hosts: dev 
+  hosts: prod 
   tasks:
     - name: install git 
       apt: name=git update_cache=yes
 
+#    - name: install virtualenv 
+#      apt: name=virtualenv update_cache=yes
+
+#    - name: Manually create virtualenv
+#      command: virtualenv /home/nandersson/venvs2/freemarketmalaga creates="/home/nandersson/venvs2/freemarketmalaga"
+
     - name: install virtualenv 
-      apt: name=virtualenv update_cache=yes
+      apt: name=python3-venv update_cache=yes
+
+    - name: install pip3 
+      apt: name=python3-pip update_cache=yes
 
     - name: Manually create virtualenv
-      command: virtualenv /home/nandersson/venvs2/freemarketmalaga creates="/home/nandersson/venvs2/freemarketmalaga"
+      command: python3 -m venv /home/nandersson/venvs3/freemarketmalaga creates="/home/nandersson/venvs3/freemarketmalaga"
 
     - name: install nginx
       apt: name=nginx update_cache=yes
 
     - name: copy nginx config file
-      copy: src=files/default dest=/etc/nginx/sites-available/default
+      copy: src=files/default.freemarketmalaga dest=/etc/nginx/sites-available/default
 
     - name: enable configuration
       file: >
@@ -31,13 +40,21 @@
     - name: Install Requirements
       pip: 
         requirements: "/var/www/free-market-malaga/requirements.txt"
-        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
+        virtualenv: "/home/nandersson/venvs3/freemarketmalaga"
+        virtualenv_python: python3
+        executable: pip3
 
     - name: Django Migrate
       django_manage:
         command: migrate
         app_path: "/var/www/free-market-malaga/src"
-        virtualenv: "/home/nandersson/venvs2/freemarketmalaga"
+        virtualenv: "/home/nandersson/venvs3/freemarketmalaga"
+
+    - name: Django Collect Static
+      django_manage:
+        command: collectstatic
+        app_path: "/var/www/free-market-malaga/src"
+        virtualenv: "/home/nandersson/venvs3/freemarketmalaga"
 
 #    - name: Django SuperUser
 #      django_manage:

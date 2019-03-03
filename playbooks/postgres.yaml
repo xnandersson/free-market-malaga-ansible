@@ -1,5 +1,5 @@
 - name: Configure postgres 
-  hosts: dev 
+  hosts: prod 
   tasks:
     - name: install python-psycopg2
       apt: name=python-psycopg2 state=installed update_cache=yes
